@@ -53,6 +53,9 @@ class CreateItem extends Component {
                 method: 'POST',
                 body: data
         });
+        // I think that the form needs to be disabled during this call,
+        // not during the mutation (or maybe as well as during the mutation)
+        // because otherwise the mutation can be called before pic is processed
         const file = await res.json();
         console.log('file', file);
         this.setState({
@@ -65,6 +68,7 @@ class CreateItem extends Component {
         return (
             <Mutation mutation={CREATE_ITEM_MUTATION} variables={this.state}>
                 {(createItem, { loading, error }) => (
+                    console.log('loading', loading) ||
                     <Form onSubmit={async e => {
                         // Stop the form from submitting
                         e.preventDefault();
@@ -127,7 +131,7 @@ class CreateItem extends Component {
                                 onChange={this.handleChange}
                                 />
                             </label>
-                            <button type="submit">Submit</button>
+                            <button type="submit" disabled={loading}>Submit</button>
                         </fieldset>
                     </Form>
                 )}
