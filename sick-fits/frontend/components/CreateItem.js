@@ -75,10 +75,10 @@ class CreateItem extends Component {
                         // Call the mutation
                         const res = await createItem();
                         // Change them to the single-item page
-                        // Router.push({
-                        //     pathname: '/item',
-                        //     query: { id: res.data.createItem.id }
-                        // })
+                        Router.push({
+                            pathname: '/item',
+                            query: { id: res.data.createItem.id }
+                        })
                     }}>
                         <Error error={error} />
                         <fieldset disabled={loading} aria-busy={loading}>
