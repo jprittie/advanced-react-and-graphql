@@ -27,9 +27,26 @@ const Pagination = props => (
                     <Head>
                         <title>Sick Fits! — Page {props.page} of {pages}</title>
                     </Head>
+                    <Link
+                        prefetch
+                        href={{
+                            pathname: 'items',
+                            query: { page: (props.page - 1) }
+                    }}>
+                        <a className="prev" aria-disabled={props.page <= 1}>Prev</a>
+                    </Link>
                     <p>
                         Page {props.page} of {pages}
                     </p>
+                    <p>{count} Items Total</p>
+                    <Link
+                        prefetch
+                        href={{
+                            pathname: 'items',
+                            query: { page: (props.page + 1) }
+                    }}>
+                        <a className="prev" aria-disabled={props.page >= pages}>Next</a>
+                    </Link>
                 </PaginationStyles>
             )
         }}
