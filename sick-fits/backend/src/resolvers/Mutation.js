@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // NB anytime you add a query or mutation to your schema, you have to create corresponding resolver too
@@ -69,7 +69,9 @@ const Mutations = {
         ctx.response.cookie('token', token, {
             httpOnly: true,
             maxAge: 1000 * 60 * 60 * 24 * 365 // 1 year cookie
-        })
+        });
+        // Finalllly we return the user to the browser
+        return user;
     }
 };
 
