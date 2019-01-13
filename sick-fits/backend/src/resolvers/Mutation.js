@@ -1,3 +1,8 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+// NB anytime you add a query or mutation to your schema, you have to create corresponding resolver too
+
 const Mutations = {
     async createItem(parent, args, ctx, info) {
         // TODO: Check if they are logged in
@@ -38,6 +43,33 @@ const Mutations = {
         // TODO
         // 3. delete it!
         return ctx.db.mutation.deleteItem({ where }, info);
+    },
+    async signup(parent, args, ctx, info) {
+        args.email = args.email.toLowerCase();
+        // hash the password
+        const password = await bcrypt.hash(args.password, 10);
+        // create the user in the database
+        const user = await ctx.db.mutation.createUser(
+            {
+                data: {
+                    // name: args.name,
+                    // email: args.email,
+                    // password: args.password
+                    ...args,
+                    password,
+                    permissions: { set: ['USER'] }
+                }
+            },
+            info
+        );
+        // create the JWT token for them
+        const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+        // we set the jwt as a cookie on the response, so that every time a user
+        // clicks to another page, the token comes along for the ride
+        ctx.response.cookie('token', token, {
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60 * 24 * 365 // 1 year cookie
+        })
     }
 };
 
