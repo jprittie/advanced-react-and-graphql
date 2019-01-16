@@ -5,9 +5,10 @@ type Mutation {
     updateItem(id: ID!, title: String, description: String, price: Int): Item!
     deleteItem(id: ID!): Item
     signup(email: String!, password: String!, name: String!): User!
+    signin(email: String!, password: String!): User!
 }
 
-# NB - no need to pass args because it's just going to take in jwt cookie and parse it for us
+# NB - no need to pass args to User because it's just going to take in jwt cookie and parse it for us
 # it will already know user id because it's been passed along with the request
 # also, User isn't required bc there may be no logged-in user
 type Query {
