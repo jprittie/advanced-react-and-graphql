@@ -13,7 +13,7 @@ type Mutation {
     deleteItem(id: ID!): Item
     signup(email: String!, password: String!, name: String!): User!
     signin(email: String!, password: String!): User!
-    signout:
+    signout: SuccessMessage
 }
 
 # NB - no need to pass args to User because it's just going to take in jwt cookie and parse it for us
