@@ -4,7 +4,6 @@ import gql from 'graphql-tag';
 import Form from './styles/Form';
 import Error from './ErrorMessage';
 import { CURRENT_USER_QUERY } from './User';
-import { finished } from 'stream';
 
 const SIGNIN_MUTATION = gql`
     mutation SIGNIN_MUTATION($email: String!, $password: String!) {
@@ -29,8 +28,8 @@ export class Signin extends Component {
 
     render() {
         return (
-            // when mutation is successfully finished, it will go into Apollo store
-            // and refetch query, so username section of nav should update itself
+                // when mutation is successfully finished, it will go into Apollo store
+                // and refetch query, so username section of nav should update itself
             <Mutation
                 mutation={SIGNIN_MUTATION}
                 variables={this.state}
