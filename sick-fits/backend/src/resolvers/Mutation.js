@@ -93,6 +93,11 @@ const Mutations = {
         });
         // 5. return the user
         return user;
+    },
+    // NB clearCookie is a method that comes from cookieParser
+    signout(parent, args, ctx, info) {
+        ctx.response.clearCookie('token');
+        return { message: 'Goodbye!' };
     }
 };
 
