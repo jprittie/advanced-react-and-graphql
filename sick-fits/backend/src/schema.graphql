@@ -14,6 +14,7 @@ type Mutation {
     signup(email: String!, password: String!, name: String!): User!
     signin(email: String!, password: String!): User!
     signout: SuccessMessage
+    requestReset(email: String!): SuccessMessage
 }
 
 # NB - no need to pass args to User because it's just going to take in jwt cookie and parse it for us
@@ -24,5 +25,17 @@ type Query {
     item(where: ItemWhereUniqueInput!): Item
     itemsConnection(where: ItemWhereInput): ItemConnection!
     me: User
+}
+
+
+# prior to this, we've just been using the regular User type imported from prisma.graphql
+# but there are fields that should never be available on the front end
+# i.e. password, resetToken, resetTokenExpiry
+# this is why we're redefining User in yoga
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    permissions: [Permission!]!
 }
 
