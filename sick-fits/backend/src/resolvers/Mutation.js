@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util'); // will take callback-based functions and turn them into promise-based functions
+const { transport, makeANiceEmail } = require('../mail');
 
 // NB anytime you add a query or mutation to your schema, you have to create corresponding resolver too
 
@@ -117,9 +118,20 @@ const Mutations = {
             where: { email: args.email },
             data: { resetToken, resetTokenExpiry }
         })
-        return { message: 'Thanks!' }
 
         // 3. Email them that reset token
+        const mailRes = await transport.sendMail({
+            from: 'wes@wesbos.com',
+            to: user.email,
+            subject: 'Your Password Reset Token',
+            html: makeANiceEmail(`Your Password Reset Token is here!
+            \n\n
+            <a href="${process.env
+              .FRONTEND_URL}/reset?resetToken=${resetToken}">Click Here to Reset</a>`),
+        });
+
+        // 4. Return the message
+        return { message: 'Thanks!' }
     },
     async resetPassword(parent, args, ctx, info) {
         // 1. check if the passwords match
