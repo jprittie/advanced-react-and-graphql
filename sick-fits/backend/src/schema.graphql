@@ -26,6 +26,10 @@ type Query {
     item(where: ItemWhereUniqueInput!): Item
     itemsConnection(where: ItemWhereInput): ItemConnection!
     me: User
+    # array is required to be returned, but array might be empty
+    # so we're not going to make User required
+    # otherwise you could run into issues when there are no users in database, or your specific filter returns no one
+    users: [User]!
 }
 
 
