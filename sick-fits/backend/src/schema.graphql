@@ -16,6 +16,7 @@ type Mutation {
     signout: SuccessMessage
     requestReset(email: String!): SuccessMessage
     resetPassword(resetToken: String!, password: String!, confirmPassword: String!): User!
+    updatePermissions(permissions: [Permission], userId: ID!): User
 }
 
 # NB - no need to pass args to User because it's just going to take in jwt cookie and parse it for us
