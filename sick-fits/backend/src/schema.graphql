@@ -17,6 +17,7 @@ type Mutation {
     requestReset(email: String!): SuccessMessage
     resetPassword(resetToken: String!, password: String!, confirmPassword: String!): User!
     updatePermissions(permissions: [Permission], userId: ID!): User
+    addToCart(id: ID!): CartItem
 }
 
 # NB - no need to pass args to User because it's just going to take in jwt cookie and parse it for us
@@ -38,10 +39,11 @@ type Query {
 # but there are fields that should never be available on the front end
 # i.e. password, resetToken, resetTokenExpiry
 # this is why we're redefining User in yoga
-type User {
+type User{
     id: ID!
     name: String!
     email: String!
     permissions: [Permission!]!
+    cart: [CartItem!]!
 }
 
